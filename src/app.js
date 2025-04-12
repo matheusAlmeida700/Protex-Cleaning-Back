@@ -12,18 +12,15 @@ const app = express();
 
 app.use(cors());
 
-// Parse JSON payloads and log requests
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(logger);
 
-// Group API routes by entity
 app.use("/api/customer", customerRoutes);
 app.use("/api/employee", employeeRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 
-// Global error handler middleware
 app.use(errorHandler);
 
 export default app;
