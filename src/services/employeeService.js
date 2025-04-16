@@ -31,6 +31,15 @@ export const addNewEmployee = async (data) => {
   }
 };
 
+export const addMultipleEmployees = async (dataArray) => {
+  try {
+    const employees = await Employee.insertMany(dataArray);
+    return employees;
+  } catch (error) {
+    throw new Error("Error creating employees: " + error.message);
+  }
+};
+
 export const modifyEmployeeById = async (id, data) => {
   try {
     const employee = await Employee.findByIdAndUpdate(id, data, { new: true });

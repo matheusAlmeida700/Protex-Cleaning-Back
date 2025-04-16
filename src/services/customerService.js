@@ -31,6 +31,15 @@ export const addNewCustomer = async (data) => {
   }
 };
 
+export const addMultipleCustomers = async (dataArray) => {
+  try {
+    const customers = await Customer.insertMany(dataArray);
+    return customers;
+  } catch (error) {
+    throw new Error("Error creating customers: " + error.message);
+  }
+};
+
 export const modifyCustomerById = async (id, data) => {
   try {
     const customer = await Customer.findByIdAndUpdate(id, data, { new: true });

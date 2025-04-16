@@ -2,6 +2,7 @@ import {
   fetchAllCustomers,
   fetchCustomerById,
   addNewCustomer,
+  addMultipleCustomers,
   modifyCustomerById,
   removeCustomerById,
 } from "../services/customerService.js";
@@ -28,14 +29,34 @@ export const getCustomerById = async (req, res, next) => {
 
 export const createCustomer = async (req, res, next) => {
   try {
-    const { error } = customerSchema.validate(req.body, { abortEarly: false });
-    if (error) {
-      return res
-        .status(400)
-        .json({ errors: error.details.map((err) => err.message) });
+    const data = req.body;
+
+    if (Array.isArray(data)) {
+      const errors = [];
+      for (const item of data) {
+        const { error } = customerSchema.validate(item, { abortEarly: false });
+        if (error) {
+          errors.push(...error.details.map((err) => err.message));
+        }
+      }
+
+      if (errors.length > 0) {
+        return res.status(400).json({ errors });
+      }
+
+      const newCustomers = await addMultipleCustomers(data);
+      return res.status(201).json({ newCustomers });
+    } else {
+      const { error } = customerSchema.validate(data, { abortEarly: false });
+      if (error) {
+        return res
+          .status(400)
+          .json({ errors: error.details.map((err) => err.message) });
+      }
+
+      const newCustomer = await addNewCustomer(data);
+      return res.status(201).json({ newCustomer });
     }
-    const newCustomer = await addNewCustomer(req.body);
-    res.status(201).json({ newCustomer });
   } catch (error) {
     next(error);
   }

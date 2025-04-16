@@ -4,6 +4,7 @@ import {
   addNewEmployee,
   modifyEmployeeById,
   removeEmployeeById,
+  addMultipleEmployees,
 } from "../services/employeeService.js";
 import { employeeSchema } from "../utils/validators.js";
 
@@ -28,16 +29,36 @@ export const getEmployeeById = async (req, res, next) => {
 
 export const createEmployee = async (req, res, next) => {
   try {
-    const { error } = employeeSchema.validate(req.body, { abortEarly: false });
-    if (error) {
-      return res
-        .status(400)
-        .json({ errors: error.details.map((err) => err.message) });
+    const data = req.body;
+
+    if (Array.isArray(data)) {
+      const errors = [];
+      for (const item of data) {
+        const { error } = employeeSchema.validate(item, { abortEarly: false });
+        if (error) {
+          errors.push(...error.details.map((err) => err.message));
+        }
+      }
+
+      if (errors.length > 0) {
+        return res.status(400).json({ errors });
+      }
+
+      const newEmployees = await addMultipleEmployees(data);
+      return res.status(201).json({ newEmployees });
+    } else {
+      const { error } = employeeSchema.validate(data, { abortEarly: false });
+      if (error) {
+        return res
+          .status(400)
+          .json({ errors: error.details.map((err) => err.message) });
+      }
+
+      const newEmployee = await addNewEmployee(data);
+      return res.status(201).json({ newEmployee });
     }
-    const newEmployee = await addNewEmployee(req.body);
-    res.status(201).json({ newEmployee });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };
 
