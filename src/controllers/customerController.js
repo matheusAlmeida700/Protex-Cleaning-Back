@@ -30,9 +30,11 @@ export const getCustomerById = async (req, res, next) => {
 export const createCustomer = async (req, res, next) => {
   try {
     const data = req.body;
+    const { id: userId } = req.user;
 
     if (Array.isArray(data)) {
       const errors = [];
+
       for (const item of data) {
         const { error } = customerSchema.validate(item, { abortEarly: false });
         if (error) {
@@ -44,7 +46,7 @@ export const createCustomer = async (req, res, next) => {
         return res.status(400).json({ errors });
       }
 
-      const newCustomers = await addMultipleCustomers(data);
+      const newCustomers = await addMultipleCustomers(data, userId);
       return res.status(201).json({ newCustomers });
     } else {
       const { error } = customerSchema.validate(data, { abortEarly: false });
@@ -54,7 +56,7 @@ export const createCustomer = async (req, res, next) => {
           .json({ errors: error.details.map((err) => err.message) });
       }
 
-      const newCustomer = await addNewCustomer(data);
+      const newCustomer = await addNewCustomer(data, userId);
       return res.status(201).json({ newCustomer });
     }
   } catch (error) {

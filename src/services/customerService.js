@@ -21,9 +21,9 @@ export const fetchCustomerById = async (id) => {
   }
 };
 
-export const addNewCustomer = async (data) => {
+export const addNewCustomer = async (data, userId) => {
   try {
-    const customer = new Customer(data);
+    const customer = new Customer({ ...data, userId });
     await customer.save();
     return customer;
   } catch (error) {
@@ -31,9 +31,10 @@ export const addNewCustomer = async (data) => {
   }
 };
 
-export const addMultipleCustomers = async (dataArray) => {
+export const addMultipleCustomers = async (dataArray, userId) => {
   try {
-    const customers = await Customer.insertMany(dataArray);
+    const customersWithUser = dataArray.map((item) => ({ ...item, userId }));
+    const customers = await Customer.insertMany(customersWithUser);
     return customers;
   } catch (error) {
     throw new Error("Error creating customers: " + error.message);
