@@ -16,11 +16,7 @@ const CustomerSchema = new mongoose.Schema(
     certifiedProfessionals: { type: Boolean, default: false },
     checklistCompleted: { type: Boolean, default: false },
     teamChangeRequest: { type: Boolean, default: false },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    userId: { type: String },
     history: [
       {
         date: { type: Date, required: true },

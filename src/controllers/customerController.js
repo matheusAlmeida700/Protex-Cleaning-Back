@@ -30,7 +30,7 @@ export const getCustomerById = async (req, res, next) => {
 export const createCustomer = async (req, res, next) => {
   try {
     const data = req.body;
-    const { id: userId } = req.user;
+    const userId = req.body.userId;
 
     if (Array.isArray(data)) {
       const errors = [];

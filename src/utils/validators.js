@@ -30,6 +30,7 @@ export const customerSchema = Joi.object({
   certifiedProfessionals: Joi.boolean().required(),
   checklistCompleted: Joi.boolean().required(),
   teamChangeRequest: Joi.boolean().required(),
+  userId: Joi.string().optional(),
   history: Joi.array()
     .items(
       Joi.object({
