@@ -52,5 +52,5 @@ export const employeeSchema = Joi.object({
 
 export const historyEntrySchema = Joi.object({
   targetId: Joi.string().required(),
-  description: Joi.string().min(10).max(7000).required(),
+  description: Joi.string().min(5).max(7000).required(),
 });

@@ -82,6 +82,11 @@ export const updateHistoryEntryById = async (req, res, next) => {
     const { id } = req.params;
     const updatedData = req.body;
     const updatedEntry = await modifyHistoryEntryById(id, updatedData);
+
+    if (updatedEntry.createdAt === updatedEntry.updatedAt) {
+      return res.status(201).json({ updatedEntry });
+    }
+
     res.status(200).json({ updatedEntry });
   } catch (error) {
     res.status(error.statusCode || 500).json({ message: error.message });

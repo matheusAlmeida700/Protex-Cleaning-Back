@@ -42,13 +42,18 @@ export const addNewHistoryEntry = async (data) => {
 
 export const modifyHistoryEntryById = async (id, data) => {
   try {
-    const entry = await HistoryEntry.findByIdAndUpdate(id, data, { new: true });
+    let entry = await HistoryEntry.findById(id);
+
     if (!entry) {
-      throw new Error("History entry not found");
+      entry = new HistoryEntry({ _id: id, ...data });
+    } else {
+      Object.assign(entry, data);
     }
+
+    await entry.save();
     return entry;
   } catch (error) {
-    throw new Error("Error updating history entry: " + error.message);
+    throw new Error("Error modifying/creating history entry: " + error.message);
   }
 };
 
