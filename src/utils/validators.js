@@ -31,14 +31,6 @@ export const customerSchema = Joi.object({
   checklistCompleted: Joi.boolean().required(),
   teamChangeRequest: Joi.boolean().required(),
   userId: Joi.string().optional(),
-  history: Joi.array()
-    .items(
-      Joi.object({
-        date: Joi.date().required(),
-        description: Joi.string().min(10).max(7000).required(),
-      })
-    )
-    .default([]),
 });
 
 export const employeeSchema = Joi.object({
@@ -56,12 +48,9 @@ export const employeeSchema = Joi.object({
   position: Joi.string(),
   teamName: Joi.string(),
   entryDate: Joi.date(),
-  history: Joi.array()
-    .items(
-      Joi.object({
-        date: Joi.date().required(),
-        description: Joi.string().min(10).max(7000).required(),
-      })
-    )
-    .default([]),
+});
+
+export const historyEntrySchema = Joi.object({
+  targetId: Joi.string().required(),
+  description: Joi.string().min(10).max(7000).required(),
 });

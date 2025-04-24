@@ -20,17 +20,6 @@ const EmployeeSchema = new mongoose.Schema(
     position: { type: String },
     teamName: { type: String },
     entryDate: { type: Date },
-    history: [
-      {
-        date: { type: Date, required: true },
-        description: {
-          type: String,
-          required: true,
-          minlength: 10,
-          maxlength: 7000,
-        },
-      },
-    ],
   },
   { timestamps: true }
 );

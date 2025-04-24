@@ -17,17 +17,6 @@ const CustomerSchema = new mongoose.Schema(
     checklistCompleted: { type: Boolean, default: false },
     teamChangeRequest: { type: Boolean, default: false },
     userId: { type: String },
-    history: [
-      {
-        date: { type: Date, required: true },
-        description: {
-          type: String,
-          required: true,
-          minlength: 10,
-          maxlength: 7000,
-        },
-      },
-    ],
   },
   { timestamps: true }
 );
