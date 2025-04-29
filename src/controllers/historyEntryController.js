@@ -5,8 +5,8 @@ import {
   addNewHistoryEntry,
   modifyHistoryEntryById,
   removeHistoryEntryById,
+  modifyHistoryByTargetId,
 } from "../services/historyEntryService.js";
-
 import { historyEntrySchema } from "../utils/validators.js";
 
 export const getAllHistoryEntries = async (req, res, next) => {
@@ -30,8 +30,8 @@ export const getHistoryEntryById = async (req, res, next) => {
 
 export const getHistoryByTarget = async (req, res, next) => {
   try {
-    const { type, targetId } = req.params;
-    const entries = await fetchHistoryByTarget(type, targetId);
+    const { targetId } = req.params;
+    const entries = await fetchHistoryByTarget(targetId);
     res.json({ entries });
   } catch (error) {
     res.status(error.statusCode || 500).json({ message: error.message });
@@ -87,6 +87,18 @@ export const updateHistoryEntryById = async (req, res, next) => {
       return res.status(201).json({ updatedEntry });
     }
 
+    res.status(200).json({ updatedEntry });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({ message: error.message });
+  }
+};
+
+export const updateHistoryByTargetId = async (req, res, next) => {
+  try {
+    const { targetId } = req.params;
+    const updatedData = req.body;
+
+    const updatedEntry = await modifyHistoryByTargetId(targetId, updatedData);
     res.status(200).json({ updatedEntry });
   } catch (error) {
     res.status(error.statusCode || 500).json({ message: error.message });

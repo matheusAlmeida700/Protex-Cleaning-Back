@@ -11,7 +11,6 @@ const HistoryEntrySchema = new mongoose.Schema(
     targetId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      refPath: "type",
     },
   },
   { timestamps: true }
