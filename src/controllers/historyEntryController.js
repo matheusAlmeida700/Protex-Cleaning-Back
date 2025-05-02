@@ -14,7 +14,7 @@ export const getAllHistoryEntries = async (req, res, next) => {
     const entries = await fetchAllHistoryEntries();
     res.json({ entries });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };
 
@@ -24,7 +24,7 @@ export const getHistoryEntryById = async (req, res, next) => {
     const entry = await fetchHistoryEntryById(id);
     res.json({ entry });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };
 
@@ -34,7 +34,7 @@ export const getHistoryByTarget = async (req, res, next) => {
     const entries = await fetchHistoryByTarget(targetId);
     res.json({ entries });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };
 
@@ -80,28 +80,22 @@ export const createHistoryEntry = async (req, res, next) => {
 export const updateHistoryEntryById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updatedData = req.body;
-    const updatedEntry = await modifyHistoryEntryById(id, updatedData);
-
-    if (updatedEntry.createdAt === updatedEntry.updatedAt) {
-      return res.status(201).json({ updatedEntry });
-    }
-
-    res.status(200).json({ updatedEntry });
+    const updatedEntry = await modifyHistoryEntryById(id, req.body);
+    const status =
+      updatedEntry.createdAt === updatedEntry.updatedAt ? 201 : 200;
+    res.status(status).json({ updatedEntry });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };
 
 export const updateHistoryByTargetId = async (req, res, next) => {
   try {
     const { targetId } = req.params;
-    const updatedData = req.body;
-
-    const updatedEntry = await modifyHistoryByTargetId(targetId, updatedData);
+    const updatedEntry = await modifyHistoryByTargetId(targetId, req.body);
     res.status(200).json({ updatedEntry });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };
 
@@ -111,6 +105,6 @@ export const deleteHistoryEntryById = async (req, res, next) => {
     const message = await removeHistoryEntryById(id);
     res.status(200).json(message);
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };

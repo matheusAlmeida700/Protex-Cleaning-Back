@@ -13,7 +13,7 @@ export const getAllEmployees = async (req, res, next) => {
     const employees = await fetchAllEmployees();
     res.json({ employees });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };
 
@@ -23,7 +23,7 @@ export const getEmployeeById = async (req, res, next) => {
     const employee = await fetchEmployeeById(id);
     res.json({ employee });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };
 
@@ -69,7 +69,7 @@ export const updateEmployeeById = async (req, res, next) => {
     const updatedEmployee = await modifyEmployeeById(id, updatedData);
     res.status(200).json({ updatedEmployee });
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };
 
@@ -79,6 +79,6 @@ export const deleteEmployeeById = async (req, res, next) => {
     const message = await removeEmployeeById(id);
     res.status(200).json(message);
   } catch (error) {
-    res.status(error.statusCode || 500).json({ message: error.message });
+    next(error);
   }
 };

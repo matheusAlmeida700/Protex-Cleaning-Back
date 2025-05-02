@@ -62,7 +62,7 @@ export const modifyHistoryByTargetId = async (targetId, data) => {
     const entry = await HistoryEntry.findOne({ targetId });
 
     if (!entry) {
-      throw new Error("Histórico não encontrado para o targetId.");
+      throw new Error("History entry not found.");
     }
 
     Object.assign(entry, data);
@@ -70,9 +70,7 @@ export const modifyHistoryByTargetId = async (targetId, data) => {
 
     return entry;
   } catch (error) {
-    throw new Error(
-      "Erro ao modificar histórico por targetId: " + error.message
-    );
+    throw new Error("Error modifying by targetId: " + error.message);
   }
 };
 
