@@ -12,14 +12,16 @@ export const userSchema = Joi.object({
     "string.empty": `"password" is required`,
     "string.min": `"password" should have a minimum length of {#limit}`,
   }),
-  role: Joi.string().valid("user", "admin").optional(),
+  role: Joi.string().valid("user", "employee", "admin").required().messages({
+    "string.empty": `"role" is required`,
+  }),
 });
 
 export const customerSchema = Joi.object({
   name: Joi.string().required(),
   occupation: Joi.string().required(),
   companyName: Joi.string().required(),
-  profilePicture: Joi.string().uri().required(),
+  profilePicture: Joi.string().uri().optional(),
   industry: Joi.string().required(),
   complaintCount: Joi.number().min(0).required(),
   serviceSLA: Joi.number().min(0).required(),
