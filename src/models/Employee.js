@@ -20,6 +20,7 @@ const EmployeeSchema = new mongoose.Schema(
     position: { type: String },
     teamName: { type: String },
     entryDate: { type: Date },
+    userId: { type: String, required: true },
   },
   { timestamps: true }
 );

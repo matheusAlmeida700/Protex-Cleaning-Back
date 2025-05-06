@@ -12,9 +12,12 @@ export const userSchema = Joi.object({
     "string.empty": `"password" is required`,
     "string.min": `"password" should have a minimum length of {#limit}`,
   }),
-  role: Joi.string().valid("user", "employee", "admin").required().messages({
-    "string.empty": `"role" is required`,
-  }),
+  role: Joi.string()
+    .valid("customer", "employee", "admin")
+    .required()
+    .messages({
+      "string.empty": `"role" is required`,
+    }),
 });
 
 export const customerSchema = Joi.object({
@@ -32,7 +35,7 @@ export const customerSchema = Joi.object({
   certifiedProfessionals: Joi.boolean().required(),
   checklistCompleted: Joi.boolean().required(),
   teamChangeRequest: Joi.boolean().required(),
-  userId: Joi.string().optional(),
+  userId: Joi.string().required(),
 });
 
 export const employeeSchema = Joi.object({
@@ -50,6 +53,7 @@ export const employeeSchema = Joi.object({
   position: Joi.string(),
   teamName: Joi.string(),
   entryDate: Joi.date(),
+  userId: Joi.string().required(),
 });
 
 export const historyEntrySchema = Joi.object({

@@ -16,7 +16,7 @@ const CustomerSchema = new mongoose.Schema(
     certifiedProfessionals: { type: Boolean, default: false },
     checklistCompleted: { type: Boolean, default: false },
     teamChangeRequest: { type: Boolean, default: false },
-    userId: { type: String },
+    userId: { type: String, required: true },
   },
   { timestamps: true }
 );

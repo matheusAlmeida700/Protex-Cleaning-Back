@@ -13,10 +13,16 @@ export const registerUser = async (data) => {
     name: data.name,
     email: data.email,
     password: hashedPassword,
+    role: data.role,
   });
 
   await newUser.save();
-  return { id: newUser._id, name: newUser.name, email: newUser.email };
+  return {
+    id: newUser._id,
+    name: newUser.name,
+    email: newUser.email,
+    role: newUser.role,
+  };
 };
 
 export const loginUser = async ({ email, password }) => {
