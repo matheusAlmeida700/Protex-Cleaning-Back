@@ -11,7 +11,14 @@ import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
 
-app.use(cors());
+const allowedOrigin = process.env.CLIENT_URL;
+
+app.use(
+  cors({
+    origin: allowedOrigin,
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(morgan("dev"));
