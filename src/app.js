@@ -13,12 +13,7 @@ const app = express();
 
 const allowedOrigin = process.env.CLIENT_URL;
 
-app.use(
-  cors({
-    origin: allowedOrigin,
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 app.use(morgan("dev"));
